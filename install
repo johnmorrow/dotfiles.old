@@ -2,8 +2,8 @@
 for i in _*
 do
   source="${PWD}/$i"
-  target="${HOME}/${i/_/./}"
-  if [ -f "${target}" ]
+  target="${HOME}/${i/_/.}"
+  if [ ! -L "${target}" ]
   then
     mv "${target}" "${target}.bak"
   fi
