@@ -52,3 +52,32 @@ set wildmode=list:longest         " Complete files like a shell.
 "
 highlight OverLength ctermbg=228 ctermfg=black
 match OverLength /\%81v.\+/
+
+" ---------------------------------------------------------------------
+"  Mappings
+"
+let mapleader = "="
+
+nmap <silent> <leader>rr :so $MYVIMRC<cr>
+"
+map <leader>t :NERDTreeToggle<cr>
+
+" map <Leader>b :TMiniBufExplorer<cr>
+" map <C-j> :MBEbp<cr>
+" map <C-k> :MBEbn<cr>
+" map <leader>1 :1b<cr>
+" map <leader>2 :2b<cr>
+" map <leader>3 :3b<cr>
+" map <leader>4 :4b<cr>
+" map <leader>5 :5b<cr>
+" map <leader>6 :6b<cr>
+" map <leader>7 :7b<cr>
+" map <leader>8 :8b<cr>
+" map <leader>9 :9b<cr>
+"
+" " Toggle line numbers and invisible chars
+map <leader>n :set nonumber!<CR>:set nolist!<CR>
+"
+" " Paste mode toggle
+map <leader>p :set invpaste<CR>
+set pastetoggle=<leader>p
