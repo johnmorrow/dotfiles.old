@@ -10,3 +10,6 @@
 [submodule "_vim/bundle/nerdtree"]
 	path = _vim/bundle/nerdtree
 	url = git://github.com/scrooloose/nerdtree.git
+[submodule "_vim/bundle/nerdtree-tabs"]
+	path = _vim/bundle/nerdtree-tabs
+	url = https://github.com/jistr/vim-nerdtree-tabs.git
