@@ -45,3 +45,9 @@ set tabstop=2                     " Global tab width.
 set visualbell                    " No beeping.
 set wildmenu                      " Enhanced command line completion.
 set wildmode=list:longest         " Complete files like a shell.
+
+" ---------------------------------------------------------------------
+"  Highlight text past 80 chars
+"
+highlight OverLength ctermbg=228 ctermfg=black
+match OverLength /\%81v.\+/
