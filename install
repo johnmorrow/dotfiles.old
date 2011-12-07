@@ -5,9 +5,11 @@ do
   target="${HOME}/${i/_/.}"
   if [ ! -L "${target}" ]
   then
-    mv "${target}" "${target}.bak"
+    mv -v "${target}" "${target}.bak"
+  else
+    rm -v ${target}
   fi
-  ln -sf "${source}" "${target}"
+  ln -svf "${source}" "${target}"
 done
 git submodule sync
 git submodule init

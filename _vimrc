@@ -41,6 +41,7 @@ set showmatch                     " Highlight matching brackets
 set showmode                      " Display the mode you're in.
 set smartindent                   " Smart Indent
 set smartcase                     " But case-sensitive if expression contains a capital letter.
+set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
 set tabstop=2                     " Global tab width.
 set visualbell                    " No beeping.
 set wildmenu                      " Enhanced command line completion.
