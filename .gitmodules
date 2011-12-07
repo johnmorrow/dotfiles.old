@@ -13,3 +13,6 @@
 [submodule "_vim/bundle/nerdtree-tabs"]
 	path = _vim/bundle/nerdtree-tabs
 	url = https://github.com/jistr/vim-nerdtree-tabs.git
+[submodule "_vim/bundle/pyflakes"]
+	path = _vim/bundle/pyflakes
+	url = https://github.com/mitechie/pyflakes-pathogen.git
