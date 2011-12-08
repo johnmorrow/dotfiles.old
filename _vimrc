@@ -3,6 +3,8 @@
 "
 set nocompatible
 call pathogen#infect()
+filetype on
+filetype off
 syntax on
 filetype plugin indent on
 
@@ -15,7 +17,7 @@ let g:solarized_termtrans=1
 let g:solarized_termcolors=256
 let g:solarized_visibility="low"
 colorscheme solarized
-"call togglebg#map("<F5>")
+call togglebg#map("<F2>")
 highlight OverLength ctermbg=228 ctermfg=black
 match OverLength /\%81v.\+/
 
