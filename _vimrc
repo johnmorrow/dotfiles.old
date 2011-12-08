@@ -14,7 +14,7 @@ set t_Co=256
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
 let g:solarized_visibility="low"
-"colorscheme solarized
+colorscheme solarized
 "call togglebg#map("<F5>")
 highlight OverLength ctermbg=228 ctermfg=black
 match OverLength /\%81v.\+/
