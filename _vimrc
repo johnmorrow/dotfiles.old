@@ -2,7 +2,7 @@
 "  Pathogen stuff
 "
 set nocompatible
-call pathogen#infect()
+"call pathogen#infect()
 syntax on
 filetype plugin indent on
 
@@ -14,8 +14,8 @@ set t_Co=256
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
 let g:solarized_visibility="low"
-colorscheme solarized
-call togglebg#map("<F5>")
+"colorscheme solarized
+"call togglebg#map("<F5>")
 highlight OverLength ctermbg=228 ctermfg=black
 match OverLength /\%81v.\+/
 
@@ -88,7 +88,7 @@ set showmode                      " Display the mode you're in.
 set showtabline=2                 " Always show tab line
 set smartindent                   " Smart Indent
 set smartcase                     " But case-sensitive if expression contains a capital letter.
-set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
+"set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
 set tabline=%!MyTabLine()         " custom function for tabline
 set tabstop=2                     " Global tab width.
 set visualbell                    " No beeping.
@@ -127,6 +127,6 @@ nmap <leader>9 9gt
 " ---------------------------------------------------------------------
 "  Source local vim rc
 "
-if filereadable(expand("~/.vimrc.local"))
-  source ~/.vimrc.local
-endif
+"if filereadable(expand("~/.vimrc.local"))
+"  source ~/.vimrc.local
+"endif
