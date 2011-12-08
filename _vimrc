@@ -3,7 +3,6 @@
 "
 set nocompatible
 call pathogen#infect()
-filetype off
 syntax on
 filetype plugin indent on
 
@@ -17,6 +16,8 @@ let g:solarized_termcolors=256
 let g:solarized_visibility="low"
 colorscheme solarized
 call togglebg#map("<F5>")
+highlight OverLength ctermbg=228 ctermfg=black
+match OverLength /\%81v.\+/
 
 " ---------------------------------------------------------------------
 "  Rename tabs to show tab# and # of viewports
@@ -95,12 +96,6 @@ set wildmenu                      " Enhanced command line completion.
 set wildmode=list:longest         " Complete files like a shell.
 
 " ---------------------------------------------------------------------
-"  Highlight text past 80 chars
-"
-highlight OverLength ctermbg=228 ctermfg=black
-match OverLength /\%81v.\+/
-
-" ---------------------------------------------------------------------
 "  Mappings
 "
 let mapleader = "="
@@ -128,3 +123,10 @@ nmap <leader>6 6gt
 nmap <leader>7 7gt
 nmap <leader>8 8gt
 nmap <leader>9 9gt
+
+" ---------------------------------------------------------------------
+"  Source local vim rc
+"
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
