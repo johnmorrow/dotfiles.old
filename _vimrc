@@ -88,7 +88,7 @@ set showmode                      " Display the mode you're in.
 set showtabline=2                 " Always show tab line
 set smartindent                   " Smart Indent
 set smartcase                     " But case-sensitive if expression contains a capital letter.
-"set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
+set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
 set tabline=%!MyTabLine()         " custom function for tabline
 set tabstop=2                     " Global tab width.
 set visualbell                    " No beeping.
@@ -127,6 +127,6 @@ nmap <leader>9 9gt
 " ---------------------------------------------------------------------
 "  Source local vim rc
 "
-"if filereadable(expand("~/.vimrc.local"))
-"  source ~/.vimrc.local
-"endif
+if filereadable(expand("~/.vimrc.local"))
+  source ~/.vimrc.local
+endif
