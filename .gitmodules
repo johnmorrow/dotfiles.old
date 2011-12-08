@@ -16,3 +16,6 @@
 [submodule "_vim/bundle/pyflakes"]
 	path = _vim/bundle/pyflakes
 	url = https://github.com/mitechie/pyflakes-pathogen.git
+[submodule "_vim/bundle/mouse-toggle"]
+	path = _vim/bundle/mouse-toggle
+	url = https://github.com/vim-scripts/Mouse-Toggle.git
