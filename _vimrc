@@ -11,7 +11,11 @@ filetype plugin indent on
 " ---------------------------------------------------------------------
 "  Colorscheme stuff
 "
-set background=light
+if filereadable(expand("~/.vim.light"))
+    set background=light
+else
+    set background=dark
+endif
 set t_Co=256
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
@@ -67,6 +71,25 @@ function! MyTabLine()
 endfunction
 
 " ---------------------------------------------------------------------
+"  Functions for status line
+"
+function! PasteOn()
+    if &paste
+        return 'P'
+    else
+        return 'p'
+    endif
+endfunction
+
+function! MouseOn()
+    if &mouse == "a"
+        return 'M'
+    else
+        return 'm'
+    endif
+endfunction
+
+" ---------------------------------------------------------------------
 "  Settings
 "
 set autoindent                    " Auto Indent
@@ -90,7 +113,7 @@ set showmode                      " Display the mode you're in.
 set showtabline=2                 " Always show tab line
 set smartindent                   " Smart Indent
 set smartcase                     " But case-sensitive if expression contains a capital letter.
-set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
+set statusline=%{PasteOn()}%{MouseOn()}\ [%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
 set tabline=%!MyTabLine()         " custom function for tabline
 set tabstop=2                     " Global tab width.
 set visualbell                    " No beeping.
