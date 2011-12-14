@@ -150,6 +150,11 @@ nmap <leader>8 8gt
 nmap <leader>9 9gt
 
 " ---------------------------------------------------------------------
+"  4 spaces for python
+"
+au FileType python setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
+
+" ---------------------------------------------------------------------
 "  Source local vim rc
 "
 if filereadable(expand("~/.vimrc.local"))
