@@ -1,0 +1,90 @@
+function append_to_path
+{
+    for p in $@
+    do
+        if [ -d "$p" ] && [[ ":$PATH" != *":$p:"* ]]
+        then
+            PATH="$PATH:$p"
+        fi
+    done
+    unset p
+    export PATH
+}
+
+function banner
+{
+    width=`figlet $* | awk '{if (i<length($0)) i=length($0)} END {print i}'`
+    printf -v line '#%*s#' "$width"
+    echo ${line// /-}
+    figlet "$*" | awk '{print " "$0}'
+    echo ${line// /-}
+}
+
+function c
+#
+# grab columns from input: echo foo bar baz quux | c 1 4
+#
+{
+    for arg in $*
+    do
+        string="${string}\" \"\$${arg}"
+    done
+    awk "{print ${string:3}}" | sed -r "s/.facebook.com[[:punct:].]*//g"
+}
+
+function colors
+{
+    # 47 on light terminal
+    green="\033[01;32;49m"
+    yellow="\033[01;33;49m"
+    cyan="\033[01;36;49m"
+    plain="\033[00;49m"
+    clear="\033[00m"
+}
+
+function cyborg-cleanup
+{
+    cyborg result $1 | grep FAIL | cut -d: -f1 | xargs cyborg verify
+}
+
+function dsh
+{
+    cat ~/dsh/node_groups/$* | grep -v ^#
+}
+
+function fbhostname
+{
+    uname -n | sed 's/.facebook.com//'
+}
+
+function gb
+{
+    git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+function isort
+{
+    sort $1 -o $1
+}
+
+function jlocate
+{
+    locate $1 | grep jmorrow | grep -v .svn | grep -v .snapshot
+}
+
+function prompt
+{
+    local tweak=12
+
+    local h=`fbhostname`
+    local u=`whoami | tr -d '\n'`
+    local d="$PWD"
+    local g=`git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'`
+    local t=`date`
+
+    let dashes=$COLUMNS-${#h}-${#u}-${#d}-${#g}-${#t}-$tweak
+    printf -- "$yellow-- $green$u@$h $cyan$d$clear$g$yellow "
+    printf -- "%${dashes}s"|tr ' ' '-'
+    printf -- "( $plain$t $yellow)--$clear\n"
+    echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"
+}

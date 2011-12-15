@@ -1,0 +1,17 @@
+source_() { [ -f $1 ] && . $1 ] }
+source_files() { for f in $@; do source_ $f; done }
+
+i=~/.zsh
+source_files \
+  "$i/functions" \
+  "$i/path" \
+  "$i/environment" \
+  "$i/aliases" \
+  "$i/completes" \
+  "$i/flow_control" \
+  "$i/ssh_agent" \
+  "$i/record" \
+  "$i/find" \
+  "$i/prompt" \
+
+unset i source_ source_files
