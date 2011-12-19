@@ -1,17 +1,129 @@
 source_() { [ -f $1 ] && . $1 ] }
 source_files() { for f in $@; do source_ $f; done }
 
-i=~/.zsh
-source_files \
-  "$i/functions" \
-  "$i/path" \
-  "$i/environment" \
-  "$i/aliases" \
-  "$i/completes" \
-  "$i/flow_control" \
-  "$i/ssh_agent" \
-  "$i/record" \
-  "$i/find" \
-  "$i/prompt" \
+set -o emacs
 
-unset i source_ source_files
+function append_to_path
+{
+  for p in ${@}
+  do
+    if [ -d "${p}" ] && [[ ":${PATH}" != *":${p}:"* ]]
+    then
+      PATH="${PATH}:${p}"
+    fi
+  done
+  unset p
+  export PATH
+}
+
+function c
+{
+  for arg in ${*}
+  do
+    string="${string}\" \"\$${arg}"
+  done
+  awk "{print ${string:3}}" | \
+    sed -r "s/.facebook.com[[:punct:].]*//g"
+}
+
+function isort
+{
+  sort ${1} -o ${1}
+}
+
+function jlocate
+{
+  locate ${1} | \
+    grep ${USERNAME} | \
+      grep -v .svn | \
+        grep -v .snapshot
+}
+
+PATH=""
+append_to_path \
+  /usr/local/bin \
+  /usr/local/sbin \
+  /opt/local/bin \
+  /opt/local/sbin \
+  /usr/kerberos/bin \
+  /usr/facebook/scripts \
+  /home/engshare/devtools/arcanist/bin \
+  /home/engshare/admin/scripts \
+  /home/engshare/admin/scripts/git \
+  /bin \
+  /sbin \
+  /usr/bin \
+  /usr/sbin \
+  /usr/X11/bin \
+  ${HOME}/bin
+
+alias commas='tr "\n" "," | sed "s/,$//"; echo'
+alias list='tr "\n" " " | sed "s/ $//"; echo'
+case `uname` in
+  Darwin)
+    alias ls='ls -FG'
+    ;;
+  Linux)
+    alias ls='ls -F --color=auto'
+    ;;
+esac
+alias latest='source ~/bin/latestscratch'
+alias new='source ~/bin/newscratch'
+alias rr='source ~/.zshrc'
+alias stdin='cat /dev/stdin'
+alias uc='sort | uniq -c'
+alias vi='vim'
+alias xhost='xargs -n 1 host'
+alias xping='xargs fping'
+
+# Turn off flow control
+stty -ixon
+
+# ssh-agent management
+source_ ~/.keychain/${HOSTNAME}-sh
+
+# Record terminal sessions.
+if [ -f ${HOME}/.record -a "x${SESSION_RECORD}" = "x" -a "x${PS1}" != "x" ]
+then
+  TIMESTAMP=`date "+%Y-%m-%d"`
+  OUTPUT=${HOME}/.sessions/session.${TIMESTAMP}.pid$$
+  SESSION_RECORD=started
+  export SESSION_RECORD
+  script -f -q ${OUTPUT}
+  exit
+fi
+
+# find wrapper to skip .svn
+source_ .zsh/find
+
+# Prompt
+autoload -U colors
+colors
+
+function precmd
+{
+  local tweak c d g gs h t u
+  tweak=10
+
+  c='-'
+  d=${PWD}
+  g=$(git branch --no-color 2>/dev/null \
+    | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/')
+  gs=$(git status --untracked-files=no --porcelain 2>/dev/null)
+  h=$(hostname -s)
+  t=$(date "+%Y-%m-%d %H:%M:%S %Z")
+  u=$(whoami | tr -d '\n')
+
+  let filling=${COLUMNS}-${#h}-${#u}-${#d}-${#g}-${#t}-${tweak}
+
+  [ -n "${gs}" ] && g=${fg[red]}${g} || g=${fg[green]}${g}
+
+  printf -- "${fg[yellow]}${c}${c} ${fg[magenta]}${u} ${fg[green]}${h} "
+  printf -- "${fg[cyan]}${d}${reset_color}${g}${fg[yellow]} "
+  printf -- "%${filling}s"|tr ' ' ${c}
+  printf -- " ${reset_color}${t}${fg[yellow]} ${c}${c}${reset_color}\n"
+
+  printf "\ek$(hostname -s)\e\\"
+}
+
+export PS1='%# '

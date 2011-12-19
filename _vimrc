@@ -101,7 +101,7 @@ set ignorecase                    " Case-insensitive searching.
 set incsearch                     " Highlight matches as you type.
 set laststatus=2                  " Show the status line all the time
 set list                          " Show invisibles
-set listchars=tab:▸\ ,eol:¬       " Set invisible characters
+set listchars=tab:▸\ ,eol:˜       " Set invisible characters
 set nowrap                        " Turn off line wrapping.
 set number                        " Show line numbers.
 set ruler                         " Show cursor position.
