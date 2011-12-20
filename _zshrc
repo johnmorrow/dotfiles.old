@@ -110,7 +110,7 @@ function precmd
   g=$(git branch --no-color 2>/dev/null \
     | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/')
   gs=$(git status --untracked-files=no --porcelain 2>/dev/null)
-  h=$(hostname -s)
+  h=$(print -P "%2m")
   t=$(date "+%Y-%m-%d %H:%M:%S %Z")
   u=$(whoami | tr -d '\n')
 
@@ -123,7 +123,7 @@ function precmd
   printf -- "%${filling}s"|tr ' ' ${c}
   printf -- " ${reset_color}${t}${fg[yellow]} ${c}${c}${reset_color}\n"
 
-  printf "\ek$(hostname -s)\e\\"
+  [[ $TERM = screen* ]] && printf "\ek$(print -P "%2m")\e\\"
 }
 
 export PS1='%# '
