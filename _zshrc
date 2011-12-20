@@ -123,7 +123,7 @@ function precmd
   printf -- "%${filling}s"|tr ' ' ${c}
   printf -- " ${reset_color}${t}${fg[yellow]} ${c}${c}${reset_color}\n"
 
-  [[ $TERM = screen* ]] && printf "\ek$(print -P "%2m")\e\\"
+  [[ -n "${TMUX}" ]] && printf "\ek$(print -P "%2m")\e\\"
 }
 
 export PS1='%# '
