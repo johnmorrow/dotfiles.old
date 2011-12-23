@@ -127,3 +127,5 @@ function precmd
 }
 
 export PS1='%# '
+
+source_ "${HOME}/.zshrc.local"
