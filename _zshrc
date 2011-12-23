@@ -93,9 +93,6 @@ then
   exit
 fi
 
-# find wrapper to skip .svn
-source_ .zsh/find
-
 # Prompt
 autoload -U colors
 colors
