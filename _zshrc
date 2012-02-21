@@ -55,6 +55,7 @@ append_to_path \
   /usr/bin \
   /usr/sbin \
   /usr/X11/bin \
+  /usr/libexec/git-core \
   ${HOME}/bin
 
 alias commas='tr "\n" "," | sed "s/,$//"; echo'
@@ -72,7 +73,7 @@ alias new='source ~/bin/newscratch'
 alias rr='source ~/.zshrc'
 alias stdin='cat /dev/stdin'
 alias tm='tmux attach || tmux new'
-alias uc='sort | uniq -c'
+alias uc='sort | uniq -c | sort -r -n'
 alias vi='vim'
 alias xhost='xargs -n 1 host'
 alias xping='xargs fping'
@@ -125,5 +126,8 @@ function precmd
 }
 
 export PS1='%# '
+export EDITOR=vim
+
+setopt AUTO_LIST
 
 source_ "${HOME}/.zshrc.local"

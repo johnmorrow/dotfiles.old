@@ -20,6 +20,9 @@ set t_Co=256
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
 let g:solarized_visibility="low"
+let g:solarized_bold=1
+let g:solarized_underline=1
+let g:solarized_italic=1
 colorscheme solarized
 call togglebg#map("<F2>")
 highlight OverLength ctermbg=228 ctermfg=black
@@ -148,6 +151,9 @@ nmap <leader>6 6gt
 nmap <leader>7 7gt
 nmap <leader>8 8gt
 nmap <leader>9 9gt
+
+" Clear last search by hitting return
+nnoremap <CR> :noh<CR><CR>
 
 " ---------------------------------------------------------------------
 "  4 spaces for python
