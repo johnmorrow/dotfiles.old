@@ -20,9 +20,9 @@ set t_Co=256
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
 let g:solarized_visibility="low"
-let g:solarized_bold=1
-let g:solarized_underline=1
-let g:solarized_italic=1
+"let g:solarized_bold=1
+"let g:solarized_underline=1
+"let g:solarized_italic=1
 colorscheme solarized
 call togglebg#map("<F2>")
 highlight OverLength ctermbg=228 ctermfg=black
@@ -113,7 +113,7 @@ set shiftwidth=2                  " autoindent width
 set showcmd                       " Display incomplete commands.
 set showmatch                     " Highlight matching brackets
 set showmode                      " Display the mode you're in.
-set showtabline=2                 " Always show tab line
+"set showtabline=2                 " Always show tab line
 set smartindent                   " Smart Indent
 set smartcase                     " But case-sensitive if expression contains a capital letter.
 set statusline=%{PasteOn()}%{MouseOn()}\ [%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
@@ -154,6 +154,21 @@ nmap <leader>9 9gt
 
 " Clear last search by hitting return
 nnoremap <CR> :noh<CR><CR>
+
+" try to make nerdtree and winmanager play nicely
+let g:winManagerWidth = 30
+let g:persistentBehaviour = 0
+map <leader>e :WMToggle<cr>
+map <leader>f :FirstExplorerWindow<cr>
+map <leader>b :BottomExplorerWindow<cr>
+let g:NERDTree_title="NERDTree"
+let g:winManagerWindowLayout="NERDTree,TagsExplorer|BufExplorer"
+function! NERDTree_Start()
+  exec 'NERDTree'
+endfunction
+function! NERDTree_IsValid()
+  return 1
+endfunction
 
 " ---------------------------------------------------------------------
 "  4 spaces for python

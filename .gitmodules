@@ -22,3 +22,6 @@
 [submodule "_vim/bundle/snipmate"]
 	path = _vim/bundle/snipmate
 	url = https://github.com/msanders/snipmate.vim.git
+[submodule "_vim/bundle/minibufexpl"]
+	path = _vim/bundle/minibufexpl
+	url = git://github.com/fholgado/minibufexpl.vim.git
