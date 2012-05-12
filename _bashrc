@@ -1,5 +1,6 @@
-source_() { [ -f $1 ] && . $1 ] }
-source_files() { for f in $@; do source_ $f; done }
+[ -z "$PS1" ] && return
+function source_() { if [ -r $1 ]; then . $1; fi }
+function source_files() { for f in $@; do source_ $f; done }
 
 set -o emacs
 
@@ -70,9 +71,8 @@ case `uname` in
 esac
 alias latest='source ~/bin/latestscratch'
 alias new='source ~/bin/newscratch'
-alias rr='source ~/.zshrc'
+alias rr='source ~/.bashrc'
 alias stdin='cat /dev/stdin'
-alias tm='tmux attach || tmux new'
 alias uc='sort | uniq -c | sort -r -n'
 alias vi='vim'
 alias xhost='xargs -n 1 host'
@@ -95,39 +95,55 @@ then
   exit
 fi
 
-# Prompt
-autoload -U colors
+function colors
+{
+    green="\033[00;32;49m"
+    yellow="\033[00;33;49m"
+    magenta="\033[00;35;49m"
+    red="\033[00;31;49m"
+    blue="\033[00;34;49m"
+    cyan="\033[00;36;49m"
+    plain="\033[00;49m"
+    clear="\033[00m"
+}
+
 colors
 
 function precmd
 {
   local tweak c d g gs h t u
   tweak=10
+  eval `resize 2> /dev/null`
+  if [ -r ~/.keychain/${HOSTNAME}-sh ]
+  then
+    eval `keychain -Q -q --eval`
+  fi
 
   c='-'
   d=${PWD}
   g=$(git branch --no-color 2>/dev/null \
     | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/')
   gs=$(git status --untracked-files=no --porcelain 2>/dev/null)
-  h=$(print -P "%2m")
+  h=$(hostname -s)
   t=$(date "+%Y-%m-%d %H:%M:%S %Z")
   u=$(whoami | tr -d '\n')
 
   let filling=${COLUMNS}-${#h}-${#u}-${#d}-${#g}-${#t}-${tweak}
 
-  [ -n "${gs}" ] && g=${fg[red]}${g} || g=${fg[green]}${g}
+  [ -n "${gs}" ] && g=${red}${g} || g=${green}${g}
 
-  printf -- "${fg[yellow]}${c}${c} ${fg[magenta]}${u} ${fg[green]}${h} "
-  printf -- "${fg[cyan]}${d}${reset_color}${g}${fg[yellow]} "
+  printf -- "${yellow}${c}${c} ${magenta}${u} ${green}${h} "
+  printf -- "${cyan}${d}${clear}${g}${yellow} "
   printf -- "%${filling}s"|tr ' ' ${c}
-  printf -- " ${reset_color}${t}${fg[yellow]} ${c}${c}${reset_color}\n"
+  printf -- " ${clear}${t}${yellow} ${c}${c}${clear}\n"
 
-  [[ -n "${TMUX}" ]] && printf "\ek$(print -P "%2m")\e\\"
+  [[ -n "${TMUX}" ]] && printf "\ek$(hostname -s)\e\\"
 }
 
-export PS1='%# '
 export EDITOR=vim
 
-setopt AUTO_LIST
+colors
+PROMPT_COMMAND=precmd
+PS1="\\$ "
 
-source_ "${HOME}/.zshrc.local"
+source_ "${HOME}/.bashrc.local"
