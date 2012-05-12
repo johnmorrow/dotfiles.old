@@ -19,3 +19,6 @@
 [submodule "_vim/bundle/minibufexpl"]
 	path = _vim/bundle/minibufexpl
 	url = git://github.com/fholgado/minibufexpl.vim.git
+[submodule "_vim/bundle/cscope_maps"]
+	path = _vim/bundle/cscope_maps
+	url = https://github.com/chazy/cscope_maps.git
