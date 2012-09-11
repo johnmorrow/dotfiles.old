@@ -40,6 +40,8 @@ function jlocate
         grep -v .snapshot
 }
 
+function nx { touch ${1} && chmod +x ${1}; }
+
 PATH=""
 append_to_path \
   /usr/local/bin \
