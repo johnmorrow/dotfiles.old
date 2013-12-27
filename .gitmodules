@@ -25,3 +25,6 @@
 [submodule "_vim/bundle/dwm"]
 	path = _vim/bundle/dwm
 	url = https://github.com/spolu/dwm.vim.git
+[submodule "_vim/bundle/vim-airline"]
+	path = _vim/bundle/vim-airline
+	url = https://github.com/bling/vim-airline
