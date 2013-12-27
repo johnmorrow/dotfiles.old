@@ -22,3 +22,6 @@
 [submodule "_vim/bundle/cscope_maps"]
 	path = _vim/bundle/cscope_maps
 	url = https://github.com/chazy/cscope_maps.git
+[submodule "_vim/bundle/dwm"]
+	path = _vim/bundle/dwm
+	url = https://github.com/spolu/dwm.vim.git

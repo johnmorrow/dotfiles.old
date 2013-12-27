@@ -74,6 +74,8 @@ esac
 alias latest='source ~/bin/latestscratch'
 alias new='source ~/bin/newscratch'
 alias rr='source ~/.bashrc'
+alias tn='tmux -2u new-session'
+alias ta='tmux -2u attach-session'
 alias stdin='cat /dev/stdin'
 alias uc='sort | uniq -c | sort -r -n'
 alias vi='vim'
