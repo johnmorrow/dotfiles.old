@@ -2,102 +2,17 @@
 function source_() { if [ -r $1 ]; then . $1; fi }
 function source_files() { for f in $@; do source_ $f; done }
 
+source_ "${HOME}/.bashrc.local.first"
+source_ /etc/bashrc
+
 set -o emacs
 
-function append_to_path
-{
-  for p in ${@}
-  do
-    if [ -d "${p}" ] && [[ ":${PATH}" != *":${p}:"* ]]
-    then
-      PATH="${PATH}:${p}"
-    fi
-  done
-  unset p
-  export PATH
-}
-
-function c
-{
-  for arg in ${*}
-  do
-    string="${string}\" \"\$${arg}"
-  done
-  awk "{print ${string:3}}" | \
-    sed -r "s/.facebook.com[[:punct:].]*//g"
-}
-
-function isort
-{
-  sort ${1} -o ${1}
-}
-
-function jlocate
-{
-  locate ${1} | \
-    grep ${USERNAME} | \
-      grep -v .svn | \
-        grep -v .snapshot
-}
-
-function nx { touch ${1} && chmod +x ${1}; }
-
-PATH=""
-append_to_path \
-  /usr/local/bin \
-  /usr/local/sbin \
-  /opt/local/bin \
-  /opt/local/sbin \
-  /usr/kerberos/bin \
-  /usr/facebook/scripts \
-  /home/engshare/devtools/arcanist/bin \
-  /home/engshare/admin/scripts \
-  /home/engshare/admin/scripts/git \
-  /bin \
-  /sbin \
-  /usr/bin \
-  /usr/sbin \
-  /usr/X11/bin \
-  /usr/libexec/git-core \
-  ${HOME}/bin
-
-alias commas='tr "\n" "," | sed "s/,$//"; echo'
-alias list='tr "\n" " " | sed "s/ $//"; echo'
-case `uname` in
-  Darwin)
-    alias ls='ls -FG'
-    ;;
-  Linux)
-    alias ls='ls -F --color=auto'
-    ;;
-esac
+alias rr='source ~/.bashrc'
 alias latest='source ~/bin/latestscratch'
 alias new='source ~/bin/newscratch'
-alias rr='source ~/.bashrc'
-alias tn='tmux -2u new-session'
-alias ta='tmux -2u attach-session'
-alias stdin='cat /dev/stdin'
-alias uc='sort | uniq -c | sort -r -n'
-alias vi='vim'
-alias xhost='xargs -n 1 host'
-alias xping='xargs fping'
 
-# Turn off flow control
-stty -ixon
-
-# ssh-agent management
-source_ ~/.keychain/${HOSTNAME}-sh
-
-# Record terminal sessions.
-if [ -f ${HOME}/.record -a "x${SESSION_RECORD}" = "x" -a "x${PS1}" != "x" ]
-then
-  TIMESTAMP=`date "+%Y-%m-%d"`
-  OUTPUT=${HOME}/.sessions/session.${TIMESTAMP}.pid$$
-  SESSION_RECORD=started
-  export SESSION_RECORD
-  script -f -q ${OUTPUT}
-  exit
-fi
+export PATH=${PATH}:/home/jmorrow/bin
+export EDITOR=vim
 
 function colors
 {
@@ -110,44 +25,41 @@ function colors
     plain="\033[00;49m"
     clear="\033[00m"
 }
-
 colors
+
+function parse_git_branch {
+    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
+    echo "("${ref#refs/heads/}")"
+}
 
 function precmd
 {
-  local tweak c d g gs h t u
-  tweak=10
-  eval `resize 2> /dev/null`
-  if [ -r ~/.keychain/${HOSTNAME}-sh ]
-  then
-    eval `keychain -Q -q --eval`
-  fi
+    local tweak c d h t u
+    tweak=10
+    eval `resize 2> /dev/null`
+    if [ -r ~/.keychain/${HOSTNAME}-sh ]
+    then
+        eval `keychain -Q -q --eval`
+    fi
 
-  c='-'
-  d=${PWD}
-  g=$(git branch --no-color 2>/dev/null \
-    | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/')
-  gs=$(git status --untracked-files=no --porcelain 2>/dev/null)
-  h=$(hostname -s)
-  t=$(date "+%Y-%m-%d %H:%M:%S %Z")
-  u=$(whoami | tr -d '\n')
+    c='―'
+    d=${PWD}
+    h=$(hostname -s)
+    g=$(parse_git_branch)
+    t=$(date "+%Y-%m-%d %H:%M:%S %Z")
+    u=$(whoami | tr -d '\n')
 
-  let filling=${COLUMNS}-${#h}-${#u}-${#d}-${#g}-${#t}-${tweak}
+    let filling=${COLUMNS}-${#h}-${#u}-${#d}-${#t}-${#g}-${tweak}
 
-  [ -n "${gs}" ] && g=${red}${g} || g=${green}${g}
+    printf -- "${yellow}${c}${c} ${magenta}${u} ${green}${h} "
+    printf -- "${cyan}${d}${clear}${g}${yellow} "
+    printf -- "%${filling}s"|sed "s/ /${c}/g"
+    printf -- " ${clear}${t}${yellow} ${c}${c}${clear}\n"
 
-  printf -- "${yellow}${c}${c} ${magenta}${u} ${green}${h} "
-  printf -- "${cyan}${d}${clear}${g}${yellow} "
-  printf -- "%${filling}s"|tr ' ' ${c}
-  printf -- " ${clear}${t}${yellow} ${c}${c}${clear}\n"
-
-  [[ -n "${TMUX}" ]] && printf "\ek$(hostname -s)\e\\"
+#    [[ -n "${TMUX}" ]] && printf "\ek$(hostname -s)\e\\"
 }
 
-export EDITOR=vim
-
-colors
-PROMPT_COMMAND=precmd
-PS1="\\$ "
+export PROMPT_COMMAND=precmd
+export PS1="\\$ "
 
 source_ "${HOME}/.bashrc.local"
