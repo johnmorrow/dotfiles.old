@@ -24,6 +24,7 @@ call vundle#end()
 " ---------------------------------------------------------------------
 " Configure plugins
 " ---------------------------------------------------------------------
+let mapleader = "="
 
 " colour schemes
 syntax enable
@@ -91,8 +92,6 @@ set wildmode=list:longest         " Complete files like a shell.
 " ---------------------------------------------------------------------
 "  Mappings
 " ---------------------------------------------------------------------
-
-let mapleader = "="
 
 " Re-read vimrc
 nmap <silent> <leader>rr :so $MYVIMRC<cr>
