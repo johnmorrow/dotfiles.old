@@ -12,6 +12,7 @@ call vundle#begin()
 Plugin 'vim-scripts/summerfruit256.vim'
 Plugin 'vim-scripts/256-jungle'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/unite.vim'
 Plugin 'kien/ctrlp.vim'
