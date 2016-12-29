@@ -13,53 +13,33 @@ alias new='source ~/bin/newscratch'
 
 export PATH=${PATH}:/home/jmorrow/bin
 export EDITOR=vim
+export VISUAL=${EDITOR}
+alias vi=${EDITOR}
 
-function colors
+alias ls='ls --color'
+LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35'
+export LS_COLORS
+
+[[ $- = *i* ]] && source_ /usr/bin/liquidprompt
+function ruler
 {
-    green="\033[00;32;49m"
-    yellow="\033[00;33;49m"
-    magenta="\033[00;35;49m"
-    red="\033[00;31;49m"
-    blue="\033[00;34;49m"
-    cyan="\033[00;36;49m"
-    plain="\033[00;49m"
-    clear="\033[00m"
-}
-colors
-
-function parse_git_branch {
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || return
-    echo "("${ref#refs/heads/}")"
-}
-
-function precmd
-{
-    local tweak c d h t u
-    tweak=10
+    local tweak c t
     eval `resize 2> /dev/null`
-    if [ -r ~/.keychain/${HOSTNAME}-sh ]
-    then
-        eval `keychain -Q -q --eval`
-    fi
-
+    tweak=3
     c='―'
-    d=${PWD}
-    h=$(hostname -s)
-    g=$(parse_git_branch)
     t=$(date "+%Y-%m-%d %H:%M:%S %Z")
-    u=$(whoami | tr -d '\n')
-
-    let filling=${COLUMNS}-${#h}-${#u}-${#d}-${#t}-${#g}-${tweak}
-
-    printf -- "${yellow}${c}${c} ${magenta}${u} ${green}${h} "
-    printf -- "${cyan}${d}${clear}${g}${yellow} "
-    printf -- "%${filling}s"|sed "s/ /${c}/g"
-    printf -- " ${clear}${t}${yellow} ${c}${c}${clear}\n"
-
-#    [[ -n "${TMUX}" ]] && printf "\ek$(hostname -s)\e\\"
+    let filling=${COLUMNS}-${#t}-${tweak}
+    printf -- "\033[00;90m%${filling}s"|sed "s/ /${c}/g"
+    printf -- " ${t} ${c}\033[00m\n"
 }
+PROMPT_COMMAND="ruler && _lp_set_prompt"
 
-export PROMPT_COMMAND=precmd
-export PS1="\\$ "
+if [ -f ~/.lessfilter ]; then
+  export LESS=-eXFR
+  export LESSOPEN="|~/.lessfilter %s"
+  alias more=less
+fi
+
+onchange() { while inotifywait -qq --exclude .swp -e modify -r .; do ruler; $@; done; }
 
 source_ "${HOME}/.bashrc.local"

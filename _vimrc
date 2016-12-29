@@ -3,6 +3,7 @@
 " ---------------------------------------------------------------------
 set nocompatible              " be iMproved, required
 filetype off                  " required
+filetype plugin on
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -16,11 +17,15 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/unite.vim'
 Plugin 'kien/ctrlp.vim'
+Plugin 'fatih/vim-go'
+Plugin 'tomasr/molokai'
+Plugin 'christoomey/vim-tmux-navigator'
 
 " ---------------------------------------------------------------------
 " Vundle done
 " ---------------------------------------------------------------------
 call vundle#end()
+filetype plugin indent on
 
 " ---------------------------------------------------------------------
 " Configure plugins
@@ -33,23 +38,40 @@ set t_Co=256
 if filereadable(expand("~/.terminal.light"))
     set background=light
     colorscheme summerfruit256
-    highlight Normal ctermbg=none
     highlight NonText ctermfg=10 ctermbg=none
     highlight LineNr ctermfg=251 ctermbg=254
+    highlight Normal ctermbg=none
 else
     set background=dark
-    colorscheme 256-jungle
-    highlight Normal ctermbg=none
+    colorscheme molokai
     highlight NonText ctermfg=238 ctermbg=none
     highlight ColorColumn ctermbg=233
+    highlight Directory ctermfg=11 ctermbg=none
+    highlight LineNr ctermfg=237 ctermbg=233
+    highlight SpecialKey ctermfg=237 ctermbg=none
+    highlight Comment ctermfg=246 ctermbg=none
+    highlight Normal ctermbg=none
 endif
 
 " Airline statusline
-let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
+"let g:airline_powerline_fonts = 1
+let g:airline_theme='luna'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#buffer_nr_show = 1
+
+" Tab stuff
+set hidden
+nmap <leader>t :enew<cr>
+nmap <leader>] :bnext<CR>
+nmap <leader>[ :bprevious<CR>
+nmap <leader>T :bp <BAR> bd #<CR>
 
 " NERDTree
 map <leader>f :NERDTreeToggle<cr>
+let NERDTreeShowLineNumbers=0
+let NERDTreeShowHidden=1
+let NERDTreeIgnore = ['\.o$', '\.swp', '.dirstamp', '.deps']
 
 " Unite
 let g:unite_source_history_yank_enable = 1
@@ -60,6 +82,13 @@ nnoremap <leader>b :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
 " Ctrl-P
 let g:ctrlp_max_files=0
 
+" Vim Go
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
 " ---------------------------------------------------------------------
 "  Settings
 " ---------------------------------------------------------------------
@@ -67,6 +96,7 @@ set autoindent                    " Auto Indent
 set backspace=indent,eol,start    " Intuitive backspacing.
 set colorcolumn=80                " Highlight column 80
 set expandtab                     " Use spaces instead of tabs
+set fillchars+=vert:│,fold:─      " Nicer split char
 set hidden                        " Handle multiple buffers better.
 set hlsearch                      " Highlight matches.
 set ignorecase                    " Case-insensitive searching.
@@ -94,29 +124,60 @@ set wildmode=list:longest         " Complete files like a shell.
 "  Mappings
 " ---------------------------------------------------------------------
 
+" buffer navigation
+nnoremap <silent> <F2> :bp<cr>
+nnoremap <silent> <F3> :bn<cr>
+
 " Re-read vimrc
-nmap <silent> <leader>rr :so $MYVIMRC<cr>
+nmap <silent> <leader>R :so $MYVIMRC<cr>
 
 " Toggle line numbers and invisible chars
 map <leader>n :set nonumber!<cr>:set nolist!<cr>: set norelativenumber!<cr>
 
+" Toggle relative line numbering
+nnoremap <leader>N :set relativenumber!<cr>
+
 " Paste mode toggle
 map <leader>p :set invpaste<cr>
-
-" Toggle relative line numbering
-nnoremap <silent><leader>r :set relativenumber!<cr>
 
 " Clear last search by hitting return
 nnoremap <cr> :noh<cr><cr>
 
-" ---------------------------------------------------------------------
-"  4 spaces for python
-"
+" Splitting
+" window
+nmap <leader>swh :topleft vnew<CR>
+nmap <leader>swl :botright vnew<CR>
+nmap <leader>swk :topleft new<CR>
+nmap <leader>swj :botright new<CR>
+" buffer
+nmap <leader>sh  :leftabove vnew<CR>
+nmap <leader>sl  :rightbelow vnew<CR>
+nmap <leader>sk  :leftabove new<CR>
+nmap <leader>sj  :rightbelow new<CR>
+
+" 4 spaces for python
 au FileType python setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
-" ---------------------------------------------------------------------
-"  Source local vim rc
-"
+" tabs for go
+au FileType go setlocal tabstop=2
+au FileType go setlocal noexpandtab
+
+" edit binary files
+augroup Binary
+  au!
+  au BufReadPre  *.bin let &bin=1
+  au BufReadPost *.bin if &bin | %!xxd
+  au BufReadPost *.bin set ft=xxd | endif
+  au BufWritePre *.bin if &bin | %!xxd -r
+  au BufWritePre *.bin endif
+  au BufWritePost *.bin if &bin | %!xxd
+  au BufWritePost *.bin set nomod | endif
+augroup END
+
+" Source local vim rc
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
+
+" Enable mouse
+" set mouse=a
