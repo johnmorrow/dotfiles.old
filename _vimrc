@@ -20,6 +20,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'fatih/vim-go'
 Plugin 'tomasr/molokai'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'rhysd/vim-clang-format'
 
 " ---------------------------------------------------------------------
 " Vundle done
@@ -50,15 +51,20 @@ else
     highlight LineNr ctermfg=237 ctermbg=233
     highlight SpecialKey ctermfg=237 ctermbg=none
     highlight Comment ctermfg=246 ctermbg=none
+    highlight MatchParen ctermfg=white ctermbg=236
     highlight Normal ctermbg=none
 endif
 
 " Airline statusline
-"let g:airline_powerline_fonts = 1
-let g:airline_theme='luna'
+let g:airline_powerline_fonts = 1
+let g:airline_theme='serene'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
 
 " Tab stuff
 set hidden
@@ -88,6 +94,19 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
+
+"Clang format
+
+let g:clang_format#code_style = "google"
+let g:clang_format#style_options = {
+            \ "UseTab" : "Never",
+            \ "Standard" : "C++11"}
+
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,h nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,h vnoremap <buffer><Leader>cf :ClangFormat<CR>
+nmap <Leader>C :ClangFormatAutoToggle<CR>
+autocmd FileType c,h,cpp ClangFormatAutoEnable
 
 " ---------------------------------------------------------------------
 "  Settings
@@ -127,6 +146,15 @@ set wildmode=list:longest         " Complete files like a shell.
 " buffer navigation
 nnoremap <silent> <F2> :bp<cr>
 nnoremap <silent> <F3> :bn<cr>
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
 
 " Re-read vimrc
 nmap <silent> <leader>R :so $MYVIMRC<cr>
@@ -157,6 +185,9 @@ nmap <leader>sj  :rightbelow new<CR>
 
 " 4 spaces for python
 au FileType python setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
+
+" 2 spaces for C
+au FileType cpp,c,h setlocal tabstop=2 expandtab shiftwidth=2 softtabstop=2
 
 " tabs for go
 au FileType go setlocal tabstop=2

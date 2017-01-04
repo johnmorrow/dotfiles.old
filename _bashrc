@@ -15,9 +15,11 @@ export PATH=${PATH}:/home/jmorrow/bin
 export EDITOR=vim
 export VISUAL=${EDITOR}
 alias vi=${EDITOR}
+export TERMINAL=gnome-terminal
+export HISTCONTROL=ignoredups
 
 alias ls='ls --color'
-LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35'
+LS_COLORS='di=33:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=35'
 export LS_COLORS
 
 [[ $- = *i* ]] && source_ /usr/bin/liquidprompt
