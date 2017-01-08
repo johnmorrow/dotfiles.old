@@ -1,0 +1,68 @@
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+command=/usr/lib/i3blocks/$BLOCK_NAME
+separator_block_width=20
+markup=none
+
+[mediaplayer]
+label= 
+instance=spotify
+interval=1
+signal=10
+color=#50C878
+
+[mediacontrol]
+command=$HOME/bin/mediacontrol
+interval=1
+color=#50C878
+
+[separator]
+
+[volume]
+label=
+command=/usr/lib/i3blocks/volume
+interval=1
+signal=10
+color=#50C878
+
+[separator]
+
+[ssid]
+label=
+command=echo "$(iw dev wlp3s0 link | grep SSID | cut -d " " -f 2-)"
+interval=1
+color=#99aa44
+
+[separator]
+
+[time]
+label=
+command=date '+%A, %d %b %Y %l:%M%P '
+interval=1
+color=#1793D1
+
+[separator]
