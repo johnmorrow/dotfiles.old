@@ -21,6 +21,7 @@ Plugin 'fatih/vim-go'
 Plugin 'tomasr/molokai'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'albertorestifo/github.vim'
 
 " ---------------------------------------------------------------------
 " Vundle done
@@ -38,9 +39,8 @@ syntax enable
 set t_Co=256
 if filereadable(expand("~/.terminal.light"))
     set background=light
-    colorscheme summerfruit256
-    highlight NonText ctermfg=10 ctermbg=none
-    highlight LineNr ctermfg=251 ctermbg=254
+    colorscheme github
+    highlight ColorColumn ctermbg=253
     highlight Normal ctermbg=none
 else
     set background=dark
@@ -57,7 +57,11 @@ endif
 
 " Airline statusline
 let g:airline_powerline_fonts = 1
-let g:airline_theme='serene'
+if filereadable(expand("~/.terminal.light"))
+    let g:airline_theme='silver'
+else
+    let g:airline_theme='serene'
+endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#buffer_idx_mode = 1
