@@ -28,7 +28,7 @@ function ruler
     local tweak c t
     eval `resize 2> /dev/null`
     tweak=3
-    c='―'
+    c='-'
     t=$(date "+%Y-%m-%d %H:%M:%S %Z")
     let filling=${COLUMNS}-${#t}-${tweak}
     printf -- "\033[00;90m%${filling}s"|sed "s/ /${c}/g"
